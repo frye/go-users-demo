@@ -196,7 +196,7 @@ func TestCreateUser_InvalidJSON(t *testing.T) {
 	router := setupTestRouter()
 	router.POST("/api/v1/users", CreateUser)
 
-	// Send invalid JSON
+	// Send invalid JSON (missing value after emoji field)
 	invalidJSON := `{"id": "4", "fullName": "Alice Cooper", "emoji": }`
 	req, _ := http.NewRequest("POST", "/api/v1/users", bytes.NewBufferString(invalidJSON))
 	req.Header.Set("Content-Type", "application/json")
@@ -318,7 +318,7 @@ func TestUpdateUser_InvalidJSON(t *testing.T) {
 	router := setupTestRouter()
 	router.PUT("/api/v1/users/:id", UpdateUser)
 
-	// Send invalid JSON
+	// Send invalid JSON (missing value after emoji field)
 	invalidJSON := `{"fullName": "John Smith", "emoji": }`
 	req, _ := http.NewRequest("PUT", "/api/v1/users/1", bytes.NewBufferString(invalidJSON))
 	req.Header.Set("Content-Type", "application/json")
