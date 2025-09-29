@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -17,8 +19,13 @@ func setupTestRouter() *gin.Engine {
 	gin.SetMode(gin.TestMode)
 	router := gin.New()
 	
+	// Get the absolute path to the templates directory
+	_, b, _, _ := runtime.Caller(0)
+	basePath := filepath.Dir(filepath.Dir(b))
+	templatesPath := filepath.Join(basePath, "templates/*")
+	
 	// Load HTML templates for HomePageHandler test
-	router.LoadHTMLGlob("../templates/*")
+	router.LoadHTMLGlob(templatesPath)
 	
 	return router
 }
@@ -151,7 +158,10 @@ func TestCreateUser_Success(t *testing.T) {
 		Emoji:    "🎭",
 	}
 
-	jsonData, _ := json.Marshal(newUser)
+	jsonData, err := json.Marshal(newUser)
+	if err != nil {
+		t.Fatalf("Failed to marshal test data: %v", err)
+	}
 	req := httptest.NewRequest("POST", "/api/v1/users", bytes.NewBuffer(jsonData))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
@@ -215,7 +225,10 @@ func TestUpdateUser_Success(t *testing.T) {
 		Emoji:    "😎",
 	}
 
-	jsonData, _ := json.Marshal(updatedUser)
+	jsonData, err := json.Marshal(updatedUser)
+	if err != nil {
+		t.Fatalf("Failed to marshal test data: %v", err)
+	}
 	req := httptest.NewRequest("PUT", "/api/v1/users/1", bytes.NewBuffer(jsonData))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
@@ -261,7 +274,10 @@ func TestUpdateUser_NotFound(t *testing.T) {
 		Emoji:    "👻",
 	}
 
-	jsonData, _ := json.Marshal(updatedUser)
+	jsonData, err := json.Marshal(updatedUser)
+	if err != nil {
+		t.Fatalf("Failed to marshal test data: %v", err)
+	}
 	req := httptest.NewRequest("PUT", "/api/v1/users/999", bytes.NewBuffer(jsonData))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
