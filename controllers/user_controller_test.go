@@ -11,6 +11,13 @@ import (
 	"userprofile-api/models"
 )
 
+// This file contains comprehensive unit tests for all controller functions in user_controller.go.
+// Tests cover both successful operations and error scenarios including:
+// - Invalid JSON input handling
+// - Not found scenarios
+// - Proper HTTP status codes
+// - Response data validation
+
 // setupTestRouter creates a test router with test mode enabled
 func setupTestRouter() *gin.Engine {
 	gin.SetMode(gin.TestMode)
