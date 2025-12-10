@@ -143,7 +143,7 @@ func TestCreateUser_InvalidJSON(t *testing.T) {
 	var response map[string]string
 	err := json.Unmarshal(w.Body.Bytes(), &response)
 	assert.NoError(t, err)
-	assert.Contains(t, response["error"], "")
+	assert.NotEmpty(t, response["error"])
 }
 
 func TestUpdateUser_Success(t *testing.T) {
@@ -229,5 +229,5 @@ func TestUpdateUser_InvalidJSON(t *testing.T) {
 	var response map[string]string
 	err := json.Unmarshal(w.Body.Bytes(), &response)
 	assert.NoError(t, err)
-	assert.Contains(t, response["error"], "")
+	assert.NotEmpty(t, response["error"])
 }
